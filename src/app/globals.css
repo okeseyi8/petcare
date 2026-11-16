@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme {
+  --color-teal-950: #1a4649;
+  --color-teal-900: #245e62;
+  --color-teal-700: #2f7c80;
+  --color-teal-200: #a6d8da;
+  --color-ink: #071413;
+  --color-ink-soft: #122321;
+  --color-mint: #e5f6f7;
+  --color-mint-strong: #cdeaec;
+  --color-cloud: #f2f7f7;
+  --color-text: #13302e;
+  --color-muted: #5e6f6d;
+  --color-on-dark-muted: #a7bcb9;
+  --color-line: #dce5e3;
+  --color-danger: #b42318;
+
+  --font-display: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
+  --font-sans: var(--font-figtree), system-ui, sans-serif;
+
+  --radius-frame: 1.25rem;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 1.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: #fff;
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    accent-color: var(--color-teal-900);
+    caret-color: var(--color-teal-900);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-teal-200);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-teal-700);
+    outline-offset: 3px;
+    border-radius: 0.375rem;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-teal-200);
+  }
+
+  html {
+    scrollbar-color: var(--color-teal-700) var(--color-cloud);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  /* Lock page scroll while the mobile menu dialog is open. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* Scalloped band edges: a row of rounded bumps along the edge, drawn with a
+   mask so the band's own background (and photos) carry the shape.
+   --scallop sets the bump diameter. */
+@utility scallop-bottom {
+  --scallop: 2.5rem;
+  padding-bottom: calc(var(--scallop) / 2);
+  mask:
+    radial-gradient(circle calc(var(--scallop) / 2) at 50% 0, #000 97%, #0000) 50% 100% / var(--scallop) calc(var(--scallop) / 2) repeat-x,
+    linear-gradient(#000 0 0) top / 100% calc(100% - var(--scallop) / 2 + 1px) no-repeat;
+}
+
+@utility scallop-top {
+  --scallop: 2.5rem;
+  padding-top: calc(var(--scallop) / 2);
+  mask:
+    radial-gradient(circle calc(var(--scallop) / 2) at 50% 100%, #000 97%, #0000) 50% 0 / var(--scallop) calc(var(--scallop) / 2) repeat-x,
+    linear-gradient(#000 0 0) bottom / 100% calc(100% - var(--scallop) / 2 + 1px) no-repeat;
+}
+
+@utility scallop-y {
+  --scallop: 2.5rem;
+  padding-block: calc(var(--scallop) / 2);
+  mask:
+    radial-gradient(circle calc(var(--scallop) / 2) at 50% 100%, #000 97%, #0000) 50% 0 / var(--scallop) calc(var(--scallop) / 2) repeat-x,
+    radial-gradient(circle calc(var(--scallop) / 2) at 50% 0, #000 97%, #0000) 50% 100% / var(--scallop) calc(var(--scallop) / 2) repeat-x,
+    linear-gradient(#000 0 0) center / 100% calc(100% - var(--scallop) + 2px) no-repeat;
+}
+
+/* Scroll-driven fade-up. Content is visible by default; only browsers with
+   scroll timelines and no reduced-motion preference animate it. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
+}
